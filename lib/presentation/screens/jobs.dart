@@ -37,19 +37,20 @@ class _JobsScreenState extends State<JobsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: Text('Jobs')),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              _buildCarousel(),
-              SizedBox(height: 16),
-              _buildFilters(),
-              SizedBox(height: 8),
-              _buildJobsGrid(),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Jobs'),
+        backgroundColor: Color(0xFF03a84e),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildCarousel(),
+            SizedBox(height: 16),
+            _buildFilters(),
+            SizedBox(height: 8),
+            _buildJobsGrid(),
+          ],
         ),
       ),
     );
