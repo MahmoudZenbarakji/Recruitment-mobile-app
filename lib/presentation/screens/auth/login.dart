@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_recuirtment/presentation/screens/masterPage.dart';
 
 class AuthApp extends StatelessWidget {
   const AuthApp({super.key});
@@ -52,6 +53,9 @@ class LoginPage extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                Container(
+                  child: Image.asset('assets/images/splashLogo.png'),
+                ),
                 const Text(
                   'Welcome Back',
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
@@ -75,7 +79,12 @@ class LoginPage extends StatelessWidget {
                 SizedBox(
                   width: size.width,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (_) => MasterScreen()),
+                      );
+                    },
                     child: const Text('Login'),
                   ),
                 ),

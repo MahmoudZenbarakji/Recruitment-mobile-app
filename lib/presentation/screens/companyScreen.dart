@@ -6,7 +6,8 @@ class CompanyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Companies")),
+      appBar:
+          AppBar(title: Text('company'), backgroundColor: Color(0xFF03A84E)),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: _buildSlider()),

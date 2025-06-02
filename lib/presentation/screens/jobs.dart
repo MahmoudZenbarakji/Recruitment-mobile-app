@@ -1,159 +1,169 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:smart_recuirtment/bussiness%20logic/cubit/pagination_cubit.dart';
-import 'package:smart_recuirtment/data/model/Job.dart';
-import 'package:smart_recuirtment/data/repo/jobRepository.dart';
+import 'package:smart_recuirtment/presentation/screens/companyScreen.dart';
+import 'package:smart_recuirtment/presentation/screens/employees_screen.dart';
+import 'package:smart_recuirtment/presentation/screens/profileScreen.dart';
 
-class JobsScreen extends StatefulWidget {
-  @override
-  _JobsScreenState createState() => _JobsScreenState();
-}
-
-class _JobsScreenState extends State<JobsScreen> {
-  int _currentCarousel = 0;
-
-  final List<String> banners = [
-    'https://via.placeholder.com/400x150',
-    'https://via.placeholder.com/400x150?text=Second',
-    'https://via.placeholder.com/400x150?text=Third',
-  ];
-
-  final List<String> filters = ['All', 'Remote', 'Full-time', 'Part-time'];
-  String selectedFilter = 'All';
-
-  final List<Map<String, String>> jobs = List.generate(
-    10,
-    (index) => {
-      "title": "Job Title $index",
-      "location": "City $index",
-      "salary": "\$${2000 + index * 300}",
-    },
-  );
-  /*  
-  for pagination 
-  final jobCubit = PaginationCubit<Job>(
-    (page, limit) => jobRepository.getJobs(page: page, limit: limit),
-  );*/
+class JobListingScreen extends StatelessWidget {
+  const JobListingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final jobs = List.generate(
+        6,
+        (index) => {
+              'image': 'assets/images/3.jpg',
+              'company': 'Company ${index + 1}',
+              'position': 'Position ${index + 1}',
+              'salary': '\$${3000 + index * 500}/month',
+            });
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Jobs'),
-        backgroundColor: Color(0xFF03a84e),
+        title: const Text('Job Listings'),
+        backgroundColor: Color(0xFF03A84E),
       ),
-      body: SingleChildScrollView(
-        child: Column(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
           children: [
-            _buildCarousel(),
-            SizedBox(height: 16),
-            _buildFilters(),
-            SizedBox(height: 8),
-            _buildJobsGrid(),
+            UserAccountsDrawerHeader(
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage('assets/images/3.jpg'),
+              ),
+              accountName: const Text("John Doe"),
+              accountEmail: null,
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text("Profile"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => ProfileScreen()),
+                );
+                // Navigate to profile screen
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.work),
+              title: const Text("Jobs"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => JobListingScreen()),
+                );
+                // Navigate to jobs screen
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.apartment),
+              title: const Text("Companies"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => CompanyScreen()),
+                );
+                // Navigate to companies screen
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.group),
+              title: const Text("Employees"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => EmployeeScreen()),
+                );
+                // Navigate to employees screen
+              },
+            ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildCarousel() {
-    return Column(
-      children: [
-        CarouselSlider(
-          items: banners
-              .map((url) => ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                        'https://th.bing.com/th/id/OIP.hRPPCTMK1M_gGEpBvux89wHaFO?rs=1&pid=ImgDetMain',
-                        errorBuilder: (context, error, stackTrace) =>
-                            const Icon(Icons.error),
-                        fit: BoxFit.cover,
-                        width: double.infinity),
-                  ))
-              .toList(),
-          options: CarouselOptions(
-              height: 180,
-              autoPlay: true,
-              onPageChanged: (index, reason) {
-                setState(() => _currentCarousel = index);
-              }),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: banners.map((url) {
-            int index = banners.indexOf(url);
-            return Container(
-              width: 8.0,
-              height: 8.0,
-              margin: EdgeInsets.symmetric(horizontal: 4.0),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _currentCarousel == index ? Colors.blue : Colors.grey,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Slider
+              SizedBox(
+                height: 200,
+                child: PageView(
+                  children: List.generate(
+                    3,
+                    (index) => ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child:
+                          Image.asset('assets/images/3.jpg', fit: BoxFit.cover),
+                    ),
+                  ),
+                ),
               ),
-            );
-          }).toList(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFilters() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: EdgeInsets.symmetric(horizontal: 8),
-      child: Row(
-        children: filters.map((filter) {
-          final isSelected = filter == selectedFilter;
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            child: ChoiceChip(
-              label: Text(filter),
-              selected: isSelected,
-              onSelected: (_) {
-                setState(() => selectedFilter = filter);
-              },
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-
-  Widget _buildJobsGrid() {
-    return Padding(
-      padding: EdgeInsets.all(8),
-      child: GridView.builder(
-        itemCount: jobs.length,
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.75,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-        itemBuilder: (context, index) {
-          final job = jobs[index];
-          return Card(
-            elevation: 3,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(job["title"]!,
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 8),
-                  Text(job["location"]!),
-                  Spacer(),
-                  Text(job["salary"]!, style: TextStyle(color: Colors.green)),
-                ],
+              const SizedBox(height: 24),
+              // Job Cards
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: jobs.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 0.65,
+                ),
+                itemBuilder: (context, index) {
+                  final job = jobs[index];
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.asset(
+                              job['image']!,
+                              height: 100,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(job['company']!,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16)),
+                          Text(job['position']!,
+                              style: const TextStyle(fontSize: 14)),
+                          const SizedBox(height: 4),
+                          Text('Salary: ${job['salary']}',
+                              style: const TextStyle(
+                                fontSize: 13,
+                              )),
+                          const Spacer(),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFF03A84E),
+                              ),
+                              child: const Text('Apply Now'),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
-            ),
-          );
-        },
+            ],
+          ),
+        ),
       ),
     );
   }
