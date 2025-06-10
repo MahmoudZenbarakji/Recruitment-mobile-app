@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_recuirtment/main.dart';
 import 'package:smart_recuirtment/presentation/screens/masterPage.dart';
 
 class AuthApp extends StatelessWidget {
@@ -7,17 +8,14 @@ class AuthApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        brightness: Brightness.dark,
         primaryColor: const Color(0xFF03A84E),
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF03A84E),
-          brightness: Brightness.dark,
         ),
         inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: Colors.black,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide.none,
@@ -46,7 +44,6 @@ class LoginPage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Colors.black,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Center(
@@ -54,6 +51,7 @@ class LoginPage extends StatelessWidget {
             child: Column(
               children: [
                 Container(
+                  decoration: BoxDecoration(),
                   child: Image.asset('assets/images/splashLogo.png'),
                 ),
                 const Text(
@@ -82,7 +80,8 @@ class LoginPage extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (_) => MasterScreen()),
+                        MaterialPageRoute(
+                            builder: (_) => HomeScreenWithCustomNavBar()),
                       );
                     },
                     child: const Text('Login'),

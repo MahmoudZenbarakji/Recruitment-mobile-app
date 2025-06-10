@@ -66,7 +66,6 @@ class CompanyScreen extends StatelessWidget {
           _FilterInput(label: "Job Title"),
           _FilterInput(label: "City"),
           _FilterInput(label: "Category"),
-          _FilterInput(label: "Salary"),
         ],
       ),
     );

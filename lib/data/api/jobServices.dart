@@ -2,10 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:smart_recuirtment/constants/endpoints.dart';
 import 'package:smart_recuirtment/constants/strings.dart';
 
-class CompanyService {
+class JobService {
   late Dio dio;
 
-  CompanyService() {
+  JobService() {
     BaseOptions options = BaseOptions(
       baseUrl: baseurl,
       receiveDataWhenStatusError: true,
@@ -15,13 +15,13 @@ class CompanyService {
     dio = Dio(options);
   }
 
-  Future<List<dynamic>> getAllCompanies() async {
+  Future<List<dynamic>> getAllJobs() async {
     try {
       Response response =
-          await dio.get(Endpoints.companies); // Adjust to your route
+          await dio.get(Endpoints.jobs); // Replace with your endpoint
       return response.data;
     } catch (e) {
-      print('Error fetching companies: $e');
+      print('Error fetching jobs: $e');
       return [];
     }
   }

@@ -1,13 +1,13 @@
-/*import 'package:your_app/data/api/company_api_service.dart';
-import 'package:your_app/data/models/company_model.dart';
+import 'package:smart_recuirtment/data/api/companyapiService.dart';
+import 'package:smart_recuirtment/data/model/company.dart';
 
 class CompanyRepository {
-  final CompanyApiService api;
+  final CompanyService companyService;
 
-  CompanyRepository(this.api);
+  CompanyRepository(this.companyService);
 
-  Future<List<CompanyModel>> getCompanies(Map<String, dynamic> filters) {
-    return api.fetchCompanies(filters);
+  Future<List<Company>> getAllCompanies() async {
+    final companies = await companyService.getAllCompanies();
+    return companies.map((item) => Company.fromJson(item)).toList();
   }
 }
-*/

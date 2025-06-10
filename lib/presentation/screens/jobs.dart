@@ -22,64 +22,6 @@ class JobListingScreen extends StatelessWidget {
         title: const Text('Job Listings'),
         backgroundColor: Color(0xFF03A84E),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            UserAccountsDrawerHeader(
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage('assets/images/3.jpg'),
-              ),
-              accountName: const Text("John Doe"),
-              accountEmail: null,
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text("Profile"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => ProfileScreen()),
-                );
-                // Navigate to profile screen
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.work),
-              title: const Text("Jobs"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => JobListingScreen()),
-                );
-                // Navigate to jobs screen
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.apartment),
-              title: const Text("Companies"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => CompanyScreen()),
-                );
-                // Navigate to companies screen
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.group),
-              title: const Text("Employees"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => EmployeeScreen()),
-                );
-                // Navigate to employees screen
-              },
-            ),
-          ],
-        ),
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
