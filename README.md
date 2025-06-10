@@ -1,4 +1,4 @@
-# smart_recuirtment
+# recuirtment platform
 
 A new Flutter project.
 
