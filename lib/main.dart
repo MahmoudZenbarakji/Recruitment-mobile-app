@@ -1,4 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_recuirtment/bussiness%20logic/bloc/employee_event.dart';
+import 'package:smart_recuirtment/bussiness%20logic/cubit/employeeCubit.dart';
+import 'package:smart_recuirtment/data/api/employeeService.dart';
+import 'package:smart_recuirtment/data/repo/employeeRepository.dart';
 import 'package:smart_recuirtment/presentation/screens/auth/login.dart';
 import 'package:smart_recuirtment/presentation/screens/companyScreen.dart';
 import 'package:smart_recuirtment/presentation/screens/employees_screen.dart';
@@ -62,7 +68,12 @@ class _HomeScreenWithCustomNavBarState
     JobListingScreen(),
     CompanyScreen(),
     MasterScreen(),
-    EmployeeScreen(),
+    BlocProvider(
+      create: (context) =>
+          EmployeeBloc(EmployeeRepository(EmployeeApiService(Dio())))
+            ..add(LoadEmployees()),
+      child: EmployeeScreen(),
+    ),
     ProfileScreen()
   ];
 

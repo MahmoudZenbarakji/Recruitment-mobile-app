@@ -1,9 +1,10 @@
-part of 'employeeCubit.dart';
+import 'package:smart_recuirtment/data/model/Employee.dart';
 
-@immutable
 abstract class EmployeeState {}
 
 class EmployeeInitial extends EmployeeState {}
+
+class EmployeeLoading extends EmployeeState {}
 
 class EmployeeLoaded extends EmployeeState {
   final List<Employee> employees;

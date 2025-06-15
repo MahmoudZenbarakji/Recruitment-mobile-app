@@ -5,19 +5,65 @@ class CompanyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Define different data for each company
+    final companies = [
+      {
+        'name': 'TechCorp',
+        'description': 'Innovative solutions for modern problems.',
+        'location': 'New York, USA',
+        'logo': Icons.business_center,
+      },
+      {
+        'name': 'Designify',
+        'description': 'Creative designs and branding.',
+        'location': 'Paris, France',
+        'logo': Icons.palette,
+      },
+      {
+        'name': 'FinancePros',
+        'description': 'Professional financial services.',
+        'location': 'London, UK',
+        'logo': Icons.attach_money,
+      },
+      {
+        'name': 'HealthNet',
+        'description': 'Revolutionizing healthcare tech.',
+        'location': 'Berlin, Germany',
+        'logo': Icons.health_and_safety,
+      },
+    ];
+
     return Scaffold(
-      appBar:
-          AppBar(title: Text('company'), backgroundColor: Color(0xFF03A84E)),
+      appBar: AppBar(
+        title: const Text('Company'),
+        backgroundColor: const Color(0xFF03A84E),
+      ),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: _buildSlider()),
-          SliverToBoxAdapter(child: _buildFilters()),
+
+          // Add heading "Companies"
+          SliverToBoxAdapter(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+              child: Text(
+                "Companies",
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+
+          // Grid of companies
           SliverPadding(
             padding: const EdgeInsets.all(8),
             sliver: SliverGrid(
               delegate: SliverChildBuilderDelegate(
-                (context, index) => _buildCompanyCard(),
-                childCount: 4,
+                (context, index) => _buildCompanyCard(companies[index]),
+                childCount: companies.length,
               ),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
@@ -56,22 +102,7 @@ class CompanyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFilters() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Wrap(
-        spacing: 10,
-        runSpacing: 10,
-        children: const [
-          _FilterInput(label: "Job Title"),
-          _FilterInput(label: "City"),
-          _FilterInput(label: "Category"),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCompanyCard() {
+  Widget _buildCompanyCard(Map<String, dynamic> company) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
@@ -87,68 +118,22 @@ class CompanyScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.grey.shade300,
               ),
-              child: const Icon(Icons.business, size: 30),
+              child: Icon(company['logo'], size: 30),
             ),
             const SizedBox(height: 8),
-            const Text("Company Name",
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            const Text(
-              "1-Short description.vskdvjldvljds..",
+            Text(company['name'],
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              company['description'],
               maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
             const Spacer(),
-            const Text("City, Country", style: TextStyle(color: Colors.grey)),
+            Text(company['location'],
+                style: const TextStyle(color: Colors.grey)),
           ],
         ),
       ),
     );
-  }
-}
-
-class _FilterInput extends StatelessWidget {
-  final String label;
-  const _FilterInput({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 150,
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: label,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-        ),
-        items: _getDropdownItems(label).map((value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (value) {
-          // Handle value selection here if needed
-        },
-      ),
-    );
-  }
-
-  List<String> _getDropdownItems(String label) {
-    switch (label) {
-      case "Job Title":
-        return ["Developer", "Designer", "Manager"];
-      case "City":
-        return ["New York", "London", "Paris"];
-      case "Category":
-        return ["IT", "Marketing", "Finance"];
-      case "Salary":
-        return ["< \$2000", "\$2000-\$5000", "> \$5000"];
-      case "Skills":
-        return ["Flutter", "React", "Node.js"];
-      case "Job Type":
-        return ["Full-time", "Part-time", "Remote"];
-      default:
-        return ["Option 1", "Option 2"];
-    }
   }
 }

@@ -1,13 +1,12 @@
 import 'package:smart_recuirtment/data/api/employeeService.dart';
-import 'package:smart_recuirtment/data/model/employee.dart';
+import 'package:smart_recuirtment/data/model/Employee.dart';
 
 class EmployeeRepository {
-  final EmployeeService employeeService;
+  final EmployeeApiService apiService;
 
-  EmployeeRepository(this.employeeService);
+  EmployeeRepository(this.apiService);
 
-  Future<List<Employee>> getAllEmployees() async {
-    final data = await employeeService.getAllEmployees();
-    return data.map((e) => Employee.fromJson(e)).toList();
+  Future<List<Employee>> getEmployees() {
+    return apiService.fetchEmployees();
   }
 }

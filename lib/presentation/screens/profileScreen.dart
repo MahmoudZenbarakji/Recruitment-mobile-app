@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_recuirtment/presentation/screens/companyScreen.dart';
-import 'package:smart_recuirtment/presentation/screens/employees_screen.dart';
-import 'package:smart_recuirtment/presentation/screens/jobs.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -31,26 +28,30 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 50,
-                      backgroundImage: AssetImage(
-                          'assets/images/logo.png'), // Replace with NetworkImage if needed
+                      backgroundImage: AssetImage('assets/images/logo.png'),
                     ),
                     SizedBox(height: 12),
                     Text(
-                      'John Doe',
+                      'mahmoud zen',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 6),
+                    SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.location_on, size: 16, color: Colors.grey),
                         SizedBox(width: 4),
                         Text(
-                          'Damascus, syria',
+                          'Damascus, Syria',
                           style: TextStyle(color: Colors.grey),
                         ),
-                        Spacer(),
+                      ],
+                    ),
+                    SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                         Icon(Icons.email, size: 16, color: Colors.grey),
                         SizedBox(width: 4),
                         Text(
@@ -83,6 +84,9 @@ class ProfileScreen extends StatelessWidget {
                     buildDetailRow('Skills', 'Flutter, Dart, Firebase'),
                     buildDetailRow('Level', 'Senior'),
                     buildDetailRow('Views', '120'),
+                    SizedBox(
+                      height: 80,
+                    )
                   ],
                 ),
               ),
@@ -97,22 +101,24 @@ class ProfileScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            flex: 2,
+          SizedBox(
+            width: 130,
             child: Text(
               title,
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
           ),
+          const SizedBox(width: 16),
           Expanded(
-            flex: 6,
-            child: Text(value),
+            child: Text(
+              value,
+              style: TextStyle(),
+            ),
           ),
         ],
       ),
     );
   }
 }
-
-// Dummy Screens for Navigation

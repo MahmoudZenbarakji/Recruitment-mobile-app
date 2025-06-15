@@ -1,6 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_recuirtment/bussiness%20logic/cubit/employeeCubit.dart';
+import 'package:smart_recuirtment/bussiness%20logic/cubit/employee_state.dart';
 import 'package:smart_recuirtment/presentation/screens/Details_screens/employeeDetail_screen.dart';
+import '../../data/model/Employee.dart';
 
 class EmployeeScreen extends StatefulWidget {
   @override
@@ -16,9 +20,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
   String _selectedWorkType = 'Any';
 
   final List<String> banners = [
-    'https://via.placeholder.com/400x150',
-    'https://via.placeholder.com/400x150?text=Second',
-    'https://via.placeholder.com/400x150?text=Third',
+    '',
   ];
 
   final List<String> salaryOptions = [
@@ -91,47 +93,70 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
 
             // Grid of Employees
             Expanded(
-              child: GridView.builder(
-                itemCount: employees.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisExtent: 220,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                ),
-                itemBuilder: (context, index) {
-                  final employee = employees[index];
-                  return Card(
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.network(employee['image']!,
-                            height: 100, width: 100),
-                        SizedBox(height: 8),
-                        Text(employee['name']!,
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        SizedBox(height: 8),
-                        Text(employee['position']!,
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => EmployeeDetailScreen(
-                                    name: employee['name']!,
-                                    position: employee['position']),
+              child: BlocBuilder<EmployeeBloc, EmployeeState>(
+                builder: (context, state) {
+                  if (state is EmployeeLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (state is EmployeeLoaded) {
+                    final employees = state.employees;
+                    return GridView.builder(
+                      itemCount: employees.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisExtent: 220,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                      ),
+                      itemBuilder: (context, index) {
+                        final employee = employees[index];
+                        return Card(
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.network(
+                                employee.image,
+                                height: 100,
+                                width: 100,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(Icons.error),
                               ),
-                            );
-                          },
-                          child: Text('View'),
-                        )
-                      ],
-                    ),
-                  );
+                              SizedBox(height: 8),
+                              Text(employee.fullName ?? '',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              SizedBox(height: 8),
+                              Text(employee.educationLevel ?? '',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          EmployeeDetailScreen(
+                                              name: employee.fullName ?? '',
+                                              position:
+                                                  employee.educationLevel ??
+                                                      ''),
+                                    ),
+                                  );
+                                },
+                                child: Text('View'),
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  } else if (state is EmployeeError) {
+                    return Center(child: Text("Error: ${state.message}"));
+                  }
+                  return Container(); // initial state
                 },
               ),
             ),
@@ -141,7 +166,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
     );
   }
 
-  Widget _buildCarousel() {
+  /*Widget _buildCarousel() {
     return Column(
       children: [
         CarouselSlider(
@@ -156,13 +181,14 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                   ))
               .toList(),
           options: CarouselOptions(
-              height: 180,
-              autoPlay: true,
-              onPageChanged: (index, reason) {
+            height: 180,
+            // autoPlay: true,
+            /*onPageChanged: (index, reason) {
                 setState(() => _currentCarousel = index);
-              }),
+              }*/
+          ),
         ),
-        Row(
+        /*Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: banners.map((url) {
             int index = banners.indexOf(url);
@@ -176,8 +202,20 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
               ),
             );
           }).toList(),
-        ),
+        ),*/
       ],
+    );
+  }*/
+  Widget _buildCarousel() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: Image.asset(
+        'assets/images/4.jpg',
+        height: 180,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
+      ),
     );
   }
 

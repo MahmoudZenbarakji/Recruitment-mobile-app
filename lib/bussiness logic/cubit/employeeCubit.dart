@@ -1,23 +1,21 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_recuirtment/data/model/employee.dart';
+import 'package:smart_recuirtment/bussiness%20logic/bloc/employee_event.dart';
 import 'package:smart_recuirtment/data/repo/employeeRepository.dart';
-import 'package:meta/meta.dart';
+import '../bloc/employee_event.dart';
+import 'employee_state.dart';
 
-part 'employee_state.dart';
+class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
+  final EmployeeRepository repository;
 
-class EmployeeCubit extends Cubit<EmployeeState> {
-  final EmployeeRepository employeeRepository;
-
-  EmployeeCubit(this.employeeRepository) : super(EmployeeInitial());
-
-  List<Employee> employees = [];
-
-  void getAllEmployees() {
-    employeeRepository.getAllEmployees().then((list) {
-      emit(EmployeeLoaded(list));
-      employees = list;
-    }).catchError((e) {
-      emit(EmployeeError("Failed to load employees"));
+  EmployeeBloc(this.repository) : super(EmployeeInitial()) {
+    on<LoadEmployees>((event, emit) async {
+      emit(EmployeeLoading());
+      try {
+        final employees = await repository.getEmployees();
+        emit(EmployeeLoaded(employees));
+      } catch (e) {
+        emit(EmployeeError(e.toString()));
+      }
     });
   }
 }

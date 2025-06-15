@@ -1,27 +1,24 @@
 import 'package:dio/dio.dart';
-import 'package:smart_recuirtment/constants/strings.dart';
-import 'package:smart_recuirtment/constants/endpoints.dart';
+import 'package:smart_recuirtment/data/model/Employee.dart';
 
-class EmployeeService {
-  late Dio dio;
+class EmployeeApiService {
+  final Dio _dio;
 
-  EmployeeService() {
-    BaseOptions options = BaseOptions(
-      baseUrl: baseurl, // Replace with your actual base URL
-      receiveDataWhenStatusError: true,
-      connectTimeout: Duration(seconds: 20),
-      receiveTimeout: Duration(seconds: 20),
-    );
-    dio = Dio(options);
-  }
+  EmployeeApiService(this._dio);
 
-  Future<List<dynamic>> getAllEmployees() async {
+  Future<List<Employee>> fetchEmployees() async {
     try {
-      Response response = await dio.get(Endpoints.employees);
-      return response.data;
+      final response =
+          await _dio.get('https://tomoh.dimasco.net/api/employees');
+
+      if (response.statusCode == 200 && response.data['status'] == true) {
+        final data = response.data['data']['data'] as List;
+        return data.map((e) => Employee.fromJson(e)).toList();
+      } else {
+        throw Exception('Failed to load employees');
+      }
     } catch (e) {
-      print(e.toString());
-      return [];
+      throw Exception('API error: $e');
     }
   }
 }

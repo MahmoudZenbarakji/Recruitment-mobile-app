@@ -11,7 +11,7 @@ class JobListingScreen extends StatelessWidget {
     final jobs = List.generate(
         6,
         (index) => {
-              'image': 'assets/images/3.jpg',
+              'image': 'assets/images/${index + 1}.jpg',
               'company': 'Company ${index + 1}',
               'position': 'Position ${index + 1}',
               'salary': '\$${3000 + index * 500}/month',

@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_recuirtment/presentation/screens/companyScreen.dart';
-import 'package:smart_recuirtment/presentation/screens/employees_screen.dart';
-import 'package:smart_recuirtment/presentation/screens/jobs.dart';
-import 'package:smart_recuirtment/presentation/screens/profileScreen.dart';
 
 class MasterScreen extends StatelessWidget {
   MasterScreen({super.key});
@@ -12,7 +8,7 @@ class MasterScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Master Screen'),
-        backgroundColor: Color(0xFF03A84E),
+        backgroundColor: const Color(0xFF03A84E),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -37,6 +33,10 @@ class MasterScreen extends StatelessWidget {
                   },
                 ),
               ),
+              const SizedBox(height: 16),
+
+              // Filters under slider
+              _buildFilters(),
               const SizedBox(height: 24),
 
               // Jobs Section
@@ -62,12 +62,12 @@ class MasterScreen extends StatelessWidget {
               ),
               _buildPagination(),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 10),
 
               // Employees Section
               const Text("Employees",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 16),
+              const SizedBox(height: 10),
               _buildGridSection(
                 itemCount: 4,
                 itemBuilder: (context, index) =>
@@ -81,9 +81,10 @@ class MasterScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildGridSection(
-      {required int itemCount,
-      required Widget Function(BuildContext, int) itemBuilder}) {
+  Widget _buildGridSection({
+    required int itemCount,
+    required Widget Function(BuildContext, int) itemBuilder,
+  }) {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -140,20 +141,11 @@ class MasterScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF03A84E),
+                  backgroundColor: const Color(0xFF03A84E),
                 ),
                 child: const Text('Apply Now'),
               ),
             ),
-
-            /*ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey,
-                foregroundColor: Colors.black,
-              ),
-              onPressed: () {},
-              child: const Text("View Details"),
-            ),*/
           ],
         ),
       ),
@@ -203,7 +195,7 @@ class MasterScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF03A84E),
+                  backgroundColor: const Color(0xFF03A84E),
                 ),
                 child: const Text('Apply Now'),
               ),
@@ -240,7 +232,7 @@ class MasterScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF03A84E),
+                  backgroundColor: const Color(0xFF03A84E),
                 ),
                 child: const Text('Apply Now'),
               ),
@@ -253,7 +245,7 @@ class MasterScreen extends StatelessWidget {
 
   Widget _buildPagination() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.only(top: 8, bottom: 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: List.generate(5, (index) {
@@ -271,5 +263,62 @@ class MasterScreen extends StatelessWidget {
         }),
       ),
     );
+  }
+
+  Widget _buildFilters() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Wrap(
+        spacing: 10,
+        runSpacing: 10,
+        children: const [
+          _FilterInput(label: "Job Title"),
+          _FilterInput(label: "City"),
+          _FilterInput(label: "Category"),
+        ],
+      ),
+    );
+  }
+}
+
+class _FilterInput extends StatelessWidget {
+  final String label;
+  const _FilterInput({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 150,
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: label,
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+        items: _getDropdownItems(label).map((value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          // Handle filter change if needed
+        },
+      ),
+    );
+  }
+
+  List<String> _getDropdownItems(String label) {
+    switch (label) {
+      case "Job Title":
+        return ["Developer", "Designer", "Manager"];
+      case "City":
+        return ["New York", "London", "Paris"];
+      case "Category":
+        return ["IT", "Marketing", "Finance"];
+      default:
+        return ["Option 1", "Option 2"];
+    }
   }
 }
