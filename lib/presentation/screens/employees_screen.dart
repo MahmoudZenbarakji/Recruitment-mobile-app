@@ -116,8 +116,8 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.network(
-                                employee.image,
+                              Image.asset(
+                                'assets/images/1.jpg',
                                 height: 100,
                                 width: 100,
                                 fit: BoxFit.cover,
